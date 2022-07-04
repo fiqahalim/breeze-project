@@ -29,5 +29,18 @@
                 {{ $slot }}
             </main>
         </div>
+
+        {{-- Footer --}}
+        <footer>
+            <div class="container mx-auto px-6">
+                <div class="border-gray-300 flex flex-col items-center">
+                    <div class="sm:w-2/3 text-center py-6">
+                        <p class="text-sm text-blue-700 font-bold mb-2">
+                            &copy; <?php echo date("Y"); ?> <a href="#" class="hover:underline">Startup™</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>
