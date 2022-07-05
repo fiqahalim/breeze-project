@@ -1,59 +1,72 @@
 <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    <x-auth-card>
+        <!-- Session Status -->
+        <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <!-- Validation Errors -->
-    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+        <!-- Validation Errors -->
+        <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-    <main class="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl">
-        <section>
-            <h3 class="font-bold text-2xl text-center">{{ __('global.mainTitle') }}</h3>
-            <p class="text-gray-600 pt-2 text-center">Sign in to your account.</p>
-        </section>
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+            <div class="grid gap-6">
+                <!-- Email Address -->
+                <div class="space-y-2">
+                    <x-label for="email" :value="__('Email')" />
 
-        <section class="mt-10">
-            <form class="flex flex-col" method="POST" action="{{ route('login') }}">
-                @csrf
-
-                {{-- Email --}}
-                <div class="mb-6 pt-3">
-                    <x-label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="email" :value="__('global.login_email')" />
-                    <x-input id="email" type="email" name="email" :value="old('email')" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3" required autofocus />
+                    <x-input-with-icon-wrapper>
+                        <x-slot name="icon">
+                            <x-heroicon-o-mail aria-hidden="true" class="w-5 h-5" />
+                        </x-slot>
+                        <x-input withicon id="email" class="block w-full" type="email" name="email"
+                            :value="old('email')" placeholder="{{ __('Email') }}" required autofocus />
+                    </x-input-with-icon-wrapper>
                 </div>
 
-                {{-- Password --}}
-                <div class="mb-6 pt-3">
-                    <x-label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="password" :value="__('global.login_password')" />
-                    <x-input id="password" class="block mt-1 w-full"
-                        type="password"
-                        name="password"
-                        class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
-                        required autocomplete="current-password" />
+                <!-- Password -->
+                <div class="space-y-2">
+                    <x-label for="password" :value="__('Password')" />
+
+                    <x-input-with-icon-wrapper>
+                        <x-slot name="icon">
+                            <x-heroicon-o-lock-closed aria-hidden="true" class="w-5 h-5" />
+                        </x-slot>
+                        <x-input withicon id="password" class="block w-full" type="password" name="password" required
+                            autocomplete="current-password" placeholder="{{ __('Password') }}" />
+                    </x-input-with-icon-wrapper>
                 </div>
 
-                {{-- Remember Me --}}
-                <div class="block mt-4">
+                <!-- Remember Me -->
+                <div class="flex items-center justify-between">
                     <label for="remember_me" class="inline-flex items-center">
-                        <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
-                        <span class="ml-2 text-sm text-gray-600">{{ __('global.remember_me') }}</span>
+                        <input id="remember_me" type="checkbox"
+                            class="text-purple-500 border-gray-300 rounded focus:border-purple-300 focus:ring focus:ring-purple-500 dark:border-gray-600 dark:bg-dark-eval-1 dark:focus:ring-offset-dark-eval-1"
+                            name="remember">
+                        <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
                     </label>
-                </div>
 
-                <div class="flex justify-end">
                     @if (Route::has('password.request'))
-                        <a class="text-sm text-purple-600 hover:text-purple-700 hover:underline mb-6" href="{{ route('password.request') }}">
-                            {{ __('global.forgot_password') }}
-                        </a>
+                    <a class="text-sm text-blue-500 hover:underline" href="{{ route('password.request') }}">
+                        {{ __('Forgot your password?') }}
+                    </a>
                     @endif
                 </div>
 
-                <x-button class="justify-center bg-purple-600 hover:bg-purple-700 text-white text-xl font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200">
-                    {{ __('Log in') }}
-                </x-button>
-            </form>
-        </section>
-    </main>
-    <div class="max-w-lg mx-auto text-center mt-12 mb-6">
-        <p class="text-white">Don't have an account? <a href="{{ route('register') }}" class="font-bold hover:underline">Sign up</a>.</p>
-    </div>
+                <div>
+                    <x-button class="justify-center w-full gap-2">
+                        <x-heroicon-o-login class="w-6 h-6" aria-hidden="true" />
+                        <span>{{ __('Log in') }}</span>
+                    </x-button>
+                </div>
+
+                @if (Route::has('register'))
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                    {{ __('Don’t have an account?') }}
+                    <a href="{{ route('register') }}" class="text-blue-500 hover:underline">
+                        {{ __('Register') }}
+                    </a>
+                </p>
+                @endif
+            </div>
+        </form>
+    </x-auth-card>
 </x-guest-layout>
